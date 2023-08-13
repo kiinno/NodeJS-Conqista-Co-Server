@@ -12,7 +12,7 @@ const ApiError = require("./utils/apiError");
 
 // Load configurations
 dotenv.config({
-  path: "config.env",
+  path: ".env",
   encoding: "utf8",
   override: true,
 });
