@@ -19,13 +19,17 @@ dotenv.config({
 
 const app = express();
 
+app.use(cors());
+app.options("*", cors());
+
 app.use(
-  cors(),
-  express.json(),
-  express.urlencoded({ extended: true }),
-  morgan("common"),
-  helmet()
+  express.json({
+    limit: "5kb",
+  })
 );
+
+app.use(express.urlencoded({ extended: true, limit: "5kb" }));
+app.use(morgan("common"), helmet());
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -39,11 +43,13 @@ const authRotue = require("./routes/authRoute");
 const usersRoute = require("./routes/userRoute");
 const storeRoute = require("./routes/storeRoute");
 const downloadRoute = require("./routes/downloadRoute");
+const orderRoute = require("./routes/orderRoute");
 
 app.use("/api/users", usersRoute);
 app.use("/api/store", storeRoute);
 app.use("/api/auth", authRotue);
 app.use("/api/downloads", downloadRoute);
+app.use("/api/order", orderRoute);
 
 // server configration api for admins
 app.get("/config", (req, res) => {
